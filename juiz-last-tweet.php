@@ -66,6 +66,7 @@ function juiz_ltw_activation() {
 
 	if( !$jltw_options = get_option( JUIZ_LTW_SETTING_NAME ) ) {
 		update_option( JUIZ_LTW_SETTING_NAME, array(
+			'loklak_api'			=> true,
 			'consumer_key' 			=> '',
 			'consumer_secret' 		=> '',
 			'oauth_token'			=> '',
@@ -88,7 +89,7 @@ function juiz_ltw_activation() {
 add_action('admin_notices', 'juiz_ltw_admin_notices');
 function juiz_ltw_admin_notices(){
 	if ( $jltw_options = get_option( JUIZ_LTW_SETTING_NAME ) ) {
-		if ($jltw_options['consumer_key']==''
+		if (!$jltw_options['loklak_api'] && ($jltw_options['consumer_key']==''
 			|| $jltw_options['consumer_secret']=='' 
 			|| $jltw_options['oauth_token'] == '' 
 			|| $jltw_options['oauth_token_secret'] == '') 
@@ -399,23 +400,37 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 					$nb_tweets = (empty($nb_tweets) OR $nb_tweets == 0) ? 1 : $nb_tweets;
 					$search_feed1 = $search_feed2 = '';
 					$is_api_1_1 = $the_best_feed = false;
-
-					// new API 1.1
-					if ( !class_exists('TwitterOAuth') && function_exists('curl_init')) {
-						require_once ('inc/twitteroauth.php');
-					}
-					
 					$options = get_option( JUIZ_LTW_SETTING_NAME );
 
-					$consumer_key 		= $options['consumer_key'];
-					$consumer_secret 	= $options['consumer_secret'];
-					$oauth_token 		= $options['oauth_token'];
-					$oauth_token_secret = $options['oauth_token_secret'];
+					if($options['loklak_api']) {
+						// Loklak API
+						if(!class_exist('Loklak')) {						
+							require_once ('inc/loklak_php_api/loklak.php');
+						}
+						$loklak_api = $options['loklak_api'];
+						$connection = new Loklak();
+						$tweets = $connection->search('', null, null, $username, $nb_tweets);
 
-					$connection = new TwitterOAuth($consumer_key, $consumer_secret, $oauth_token, $oauth_token_secret);
+						$tweets = json_decode($tweets, true);
+		                $tweets = json_decode($tweets['body'], true);
+		                
+		                $tweet_content = $tweets['statuses'];
+					}
+					else {
+						// new API 1.1
+						if( !class_exists('TwitterOAuth') && function_exists('curl_init')) {						
+							require_once ('inc/twitteroauth.php');
+						}
+						$consumer_key 		= $options['consumer_key'];
+						$consumer_secret 	= $options['consumer_secret'];
+						$oauth_token 		= $options['oauth_token'];
+						$oauth_token_secret = $options['oauth_token_secret'];
 
-					$search_feed3 = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=".$username."&count=".intval($nb_tweets); 
-					$api_1_1_content = $connection->get($search_feed3);
+						$connection = new TwitterOAuth($consumer_key, $consumer_secret, $oauth_token, $oauth_token_secret);
+
+						$search_feed3 = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=".$username."&count=".intval($nb_tweets); 
+						$tweet_content = $connection->get($search_feed3);
+					}
 
 					/*
 					 *	version 1.3.0 removes all mentions of API 1.0, no longer activated by Twitter.
@@ -424,11 +439,11 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 
 					// if connection is ok
 
-					if ( is_array( $api_1_1_content ) ) {
+					if ( is_array( $tweet_content ) ) {
 
 						// trouble with object or array type in Twitter API 1.1
-						$is_object = is_object($api_1_1_content[0]);
-						$rss_i = $api_1_1_content;
+						$is_object = is_object($tweet_content[0]);
+						$rss_i = $tweet_content;
 
 						// avatar
 
@@ -554,8 +569,8 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 						if( !$is_tweet_cached ) {
 							$html_result = '<li><em>' . $html_result . ' '.apply_filters('juiz_ltw_twitter_feed_not_loadable',__('The RSS feed for this twitter account is not loadable for the moment.', 'juiz_ltw')).'</em></li>';
 						
-							if ( isset( $api_1_1_content -> errors[0] -> code) ) {
-								echo '<!-- JLTW Twitter API 1.1 error code : '. $api_1_1_content->errors[0] -> code . ' ('. $api_1_1_content->errors[0] -> message . ')-->';
+							if ( isset( $tweet_content -> errors[0] -> code) ) {
+								echo '<!-- JLTW Twitter API 1.1 error code : '. $tweet_content->errors[0] -> code . ' ('. $tweet_content->errors[0] -> message . ')-->';
 							}
 							else {
 								echo '<!-- JLTW Twitter API 1.1 error - No error code... -->';
