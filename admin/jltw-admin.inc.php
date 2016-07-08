@@ -28,6 +28,7 @@ function juiz_ltw_custom_admin_header() {
 
 	if( !$jltw_options ) {
 		update_option( JUIZ_LTW_SETTING_NAME, array(
+			'loklak_api'			=> true,
 			'consumer_key' 			=> '',
 			'consumer_secret' 		=> '',
 			'oauth_token'			=> '',
@@ -68,6 +69,8 @@ function add_juiz_ltw_plugin_options() {
 	register_setting( JUIZ_LTW_SETTING_NAME, JUIZ_LTW_SETTING_NAME, 'juiz_ltw_sanitize' );
 	
 	add_settings_section('juiz_ltw_plugin_twitter_api', __('Twitter API 1.1 Settings','juiz_ltw'), 'juiz_ltw_section_text', JUIZ_LTW_SLUG);
+
+	add_settings_field('juiz_ltw_loklak_api','<label for="juiz_ltw_loklak_api">'. __('Loklak API', 'juiz_ltw').'</label>' , 'juiz_ltw_setting_input_loklak_api', JUIZ_LTW_SLUG, 'juiz_ltw_plugin_twitter_api');
 	
 	add_settings_field('juiz_ltw_twitter_user','<label for="juiz_ltw_consumer_key">'. __('API Key', 'juiz_ltw').'</label>' , 'juiz_ltw_setting_input_consumer_key', JUIZ_LTW_SLUG, 'juiz_ltw_plugin_twitter_api');
 	add_settings_field('juiz_ltw_consumer_secret','<label for="juiz_ltw_consumer_secret">'. __('API Secret', 'juiz_ltw').'</label>' , 'juiz_ltw_setting_input_consumer_secret', JUIZ_LTW_SLUG, 'juiz_ltw_plugin_twitter_api');
@@ -96,6 +99,7 @@ function juiz_ltw_sanitize($options) {
 	$regexp = '#\#[a-fA-F0-9]{3}#';
 
 	$newoptions['default_styles']		= $options['default_styles']==1 ? 1 : 0;
+	$newoptions['loklak_api']			= $options['loklak_api'];
 	$newoptions['consumer_key']			= sanitize_text_field( $options['consumer_key'] );
 	$newoptions['consumer_secret']		= sanitize_text_field( $options['consumer_secret'] );
 	$newoptions['oauth_token']			= sanitize_text_field( $options['oauth_token'] );
@@ -124,6 +128,20 @@ function juiz_ltw_section_text() {
 	echo '<li>'.__('In the next page, find the 4 informations (API key, API secret, Access token and Access token secret).','juiz_ltw').'</li>';
 	echo '<li>'.__('Write them in the fields below (they are big strings of characters).','juiz_ltw').'</li>';
 	echo '</ol>';
+}
+
+// input for loklak api
+function juiz_ltw_setting_input_loklak_api() {
+	$options = get_option( JUIZ_LTW_SETTING_NAME );
+	if ( is_array($options) ) {
+
+		echo '<p class="juiz_ltw_options_p"><input id="juiz_ltw_loklak_api" ';
+
+		if($options['loklak_api'] == true) {
+			echo 'checked="checked" '; 
+		} 
+		echo 'name="'.JUIZ_LTW_SETTING_NAME.'[loklak_api]" type="checkbox" class="juiz_text_big">&nbsp;<label for="jltw_css_y">'. __('Use anonymous API of <a href="http://loklak.org/">loklak.org</a> and get plugin data <br/>through loklak (no registration and authentication required).<br/><a href="http://loklak.org/">Find out more</a>', 'juiz_ltw') . '</label></p>';
+	}
 }
 
 // input for consumer key
