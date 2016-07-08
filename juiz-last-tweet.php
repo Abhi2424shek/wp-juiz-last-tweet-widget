@@ -493,6 +493,8 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 						$i = 0;
 						foreach ( $rss_i as $tweet ) {
 							$i++;
+							if($options['loklak_api'])
+								$tweet['source'] = $tweet['source_type'];
 							$tweet_text = $is_object ? $tweet -> text : $tweet['text'];
 							$tweet_creat= $is_object ? $tweet -> created_at : $tweet['created_at'];
 							$screename 	= $is_object ? $tweet -> user -> screen_name : $tweet['user']['screen_name'];
