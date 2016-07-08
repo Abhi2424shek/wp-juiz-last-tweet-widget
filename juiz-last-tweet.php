@@ -92,7 +92,7 @@ function juiz_ltw_admin_notices(){
 		if (!$jltw_options['loklak_api'] && ($jltw_options['consumer_key']==''
 			|| $jltw_options['consumer_secret']=='' 
 			|| $jltw_options['oauth_token'] == '' 
-			|| $jltw_options['oauth_token_secret'] == '') 
+			|| $jltw_options['oauth_token_secret'] == '') )
 		{
 			echo '<div class="error">
 				<h3>'.__("Don't worry!",'juiz_ltw').'</h3>
@@ -404,7 +404,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 
 					if($options['loklak_api']) {
 						// Loklak API
-						if(!class_exist('Loklak')) {						
+						if(!class_exists('Loklak')) {						
 							require_once ('inc/loklak_php_api/loklak.php');
 						}
 						$loklak_api = $options['loklak_api'];
@@ -413,8 +413,15 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 
 						$tweets = json_decode($tweets, true);
 		                $tweets = json_decode($tweets['body'], true);
-		                
+
+		                $user = $connection->user($username);
+						$user = json_decode($user, true);
+						$user = json_decode($user['body'], true);
+
 		                $tweet_content = $tweets['statuses'];
+		                for ($i=0; $i < sizeof($tweet_content); $i++) { 
+			            	$tweet_content[$i] = array_merge($tweet_content[$i], $user);
+			            }
 					}
 					else {
 						// new API 1.1
@@ -446,7 +453,8 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 						$rss_i = $tweet_content;
 
 						// avatar
-
+						if($options['loklak_api'])
+							$rss_i[0]['user']['profile_image_url'] = $rss_i[0]['user']['profile_image_url_https'];
 						$author = $is_object ? $rss_i[0] -> user -> screen_name : $rss_i[0]['user']['screen_name'];
 						$avatar = $is_object ? $rss_i[0] -> user -> profile_image_url : $rss_i[0]['user']['profile_image_url'];
 						$html_avatar = $new_attrs = '';
