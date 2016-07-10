@@ -110,7 +110,7 @@ function juiz_ltw_admin_notices(){
 
 class Juiz_Last_Tweet_Widget extends WP_Widget {
 
-	function Juiz_Last_Tweet_Widget() {
+	public function __construct() {
 	
 		// multilingual
 		

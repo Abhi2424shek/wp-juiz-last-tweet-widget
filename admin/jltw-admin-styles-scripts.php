@@ -67,6 +67,25 @@
 			jQuery(document).ready(function($) {
 
 				var speedy = 400;
+				if($("#juiz_ltw_loklak_api").prop('checked')){
+					juiz_ltw_update_twitter_auth(true);
+				}
+				console.log("helllo");
+			    $("#juiz_ltw_loklak_api").live('change', function() {
+			    	if($(this).is(':checked')){
+				    	juiz_ltw_update_twitter_auth(true);
+				    }
+				    else {
+				    	juiz_ltw_update_twitter_auth(false);
+				    }
+				});
+
+				function juiz_ltw_update_twitter_auth(arg) {
+				    $("#juiz_ltw_consumer_key").prop('disabled', arg);
+					$("#juiz_ltw_consumer_secret").prop('disabled', arg);
+					$("#juiz_ltw_oauth_token").prop('disabled', arg);
+					$("#juiz_ltw_oauth_token_secret").prop('disabled', arg);
+				}
 
 				$('.juiz_how_to').on('click', function(){
 					$(this).closest('p').next('.juiz_next_help').slideToggle(speedy);
