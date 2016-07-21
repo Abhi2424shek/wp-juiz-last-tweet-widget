@@ -1,4 +1,5 @@
 ﻿=== Juiz Last Tweet Widget ===
+
 Contributors: CreativeJuiz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: twitter, widget, social, sidebar, last, tweet, shortcode, customization, flat
@@ -131,13 +132,34 @@ You can use one of the both method :
 1. Configure plugin in Appearance -> Widgets.
 
 == Screenshots ==
+
 1. Juiz Last Tweet in action (french interface)
+
+	![French Interface](./screenshot-1.png)
+
 2. Juiz Last Tweet in the admin (Widget view)
+
+	![Admin](./screenshot-2.png)
+
 3. Juiz Last Tweet with avatar displayed and custom CSS
+
+	![Custom CSS](./screenshot-3.png)
+
 4. Juiz Last Tweet with avatar and action links displayed
+
+	![Action Links](./screenshot-4.png)
+
 5. An example of custom styles
+
+	![Styles](./screenshot-5.png)
+
 6. The new admin page for 1.2.0 (translators are welcome :p)
+
+	![New Admin Page](./screenshot-6.png)
+
 7. The new color picker feature!
+
+	![Color Picker](./screenshot-7.png)
 
 == Frequently Asked Questions ==
 
@@ -298,6 +320,7 @@ See the documentation.html files inside your plugin folder !
 == Informations ==
 
 Another plugin :
+
 * [Juiz Smart Mobile Admin](http://wordpress.org/extend/plugins/juiz-smart-mobile-admin/ "Your blog always with you")
 
 You like it ? You can donate or [tweet](https://twitter.com/intent/tweet?hashtags=CreativeJuiz&original_referer=http%3A%2F%2Fwordpress.org%2Fextend%2Fplugins%2Fjuiz-last-tweet-widget%2F&related=geoffrey_crofte&source=WordPress&text=I%20use%20Juiz-Last-Tweet%20Plugin%20for%20WordPress.%20It's%20usefull!!&url=http%3A%2F%2Fwww.creativejuiz.fr%2Fblog%2Fwordpress%2Fwordpress-plugin-afficher-derniers-tweets-widget&via=geoffrey_crofte "Tweet a little word") for this plugin.
@@ -308,29 +331,39 @@ Full documentation in the plugin folder ! (documentation.html)
 Or here: [Documentation](http://creativejuiz.fr/blog/doc/juiz-last-tweet-widget-documentation.html)
 
 == Upgrade Notice ==
+
 = 1.3.0 =
+
 Upgrade! New awesome features!
 
 = 1.1.5 =
+
 Update for new CSS fixes and languages support
 
 = 1.1.1 =
+
 Need an update if you downloaded 1.1.0
 
 = 1.1.0 =
+
 Lot of usefull things, and some fixes, update!! ;)
 
 = 1.0.3 =
+
 Upgrade if you want to display more than one widgets of this plugin
 
 = 1.0.2 =
+
 Upgrade if you tweets, tweets and tweets again and again
 
 = 1.0.1 =
+
 Need upgrade
 
 = 1.0.0 =
+
 No need to upgrade if your tweets are displayed.
 
 = 1.0.0 beta =
+
 New version in test...
